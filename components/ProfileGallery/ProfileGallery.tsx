@@ -1,8 +1,9 @@
-import React from 'react';
-import {View, StyleSheet, ScrollView, Modal, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, ScrollView, Modal, Text, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SCREEN_WIDTH} from '../../constants';
 import useProfilePhotos from '../../hooks/useProfilePhotos';
+import {Photo} from '../../interfaces/Photo';
 import ProfileGalleryItem from './ProfileGalleryItem';
 
 const styles = StyleSheet.create({
@@ -22,10 +23,15 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
   },
+  modalImage: {
+    width: 300,
+    height: 300,
+  },
 });
 
 const ProfileGallery = ({navigate}) => {
   const {photos} = useProfilePhotos();
+  const [selected, setSelected] = useState<Photo | null>(null);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -42,14 +48,21 @@ const ProfileGallery = ({navigate}) => {
               {/* Using modal show details */}
               <TouchableOpacity
                 onPress={() => {
-                  console.log('hello');
+                  setSelected(item);
                 }}>
                 <ProfileGalleryItem photo={item} index={index} key={item.id} />
               </TouchableOpacity>
-              <Modal animationType="slide" transparent={true}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={!!selected}>
                 <View style={styles.modalContainer}>
                   <View style={styles.modalContent}>
-                    <Text>Hello</Text>
+                    <Image
+                      style={styles.modalImage}
+                      source={{uri: selected?.url}}
+                    />
+                    <Text>{selected?.title}</Text>
                   </View>
                 </View>
               </Modal>
