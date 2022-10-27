@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, Modal, Text, Image} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Modal,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {SCREEN_WIDTH} from '../../constants';
 import useProfilePhotos from '../../hooks/useProfilePhotos';
 import {Photo} from '../../interfaces/Photo';
@@ -22,10 +29,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     borderRadius: 10,
+    position: 'relative',
   },
   modalImage: {
     width: 300,
     height: 300,
+  },
+  modalClose: {
+    width: 30,
+    height: 30,
+  },
+  modalCloseContainer: {
+    position: 'absolute',
+    top: -10,
+    right: -10,
+    elevation: 100,
+    zIndex: 100,
   },
 });
 
@@ -58,6 +77,16 @@ const ProfileGallery = ({navigate}) => {
                 visible={!!selected}>
                 <View style={styles.modalContainer}>
                   <View style={styles.modalContent}>
+                    <TouchableOpacity
+                      style={styles.modalCloseContainer}
+                      onPress={() => {
+                        setSelected(null);
+                      }}>
+                      <Image
+                        style={styles.modalClose}
+                        source={require('../../assets/images/cancel-icon.png')}
+                      />
+                    </TouchableOpacity>
                     <Image
                       style={styles.modalImage}
                       source={{uri: selected?.url}}
