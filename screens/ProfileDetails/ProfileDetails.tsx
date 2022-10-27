@@ -1,13 +1,16 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const ProfileDetails = ({route}) => {
+const ProfileDetails = props => {
+  const {route} = props;
   const {params} = route;
+  const {item} = params;
+  const {title} = item;
   console.log(params);
 
   return (
     <View>
-      <Text>Hello</Text>
+      <Text>{title}</Text>
     </View>
   );
 };
